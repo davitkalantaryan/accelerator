@@ -86,7 +86,7 @@ public:
 
 	
 public:
-	OptimAlg( const size_t& unNumberThreads, class Matcher* pOwner  );
+	OptimAlg(class Matcher* pOwner  );
 	~OptimAlg();
 
 	void			StartMatch(int nThreadsNum);
@@ -97,7 +97,7 @@ private:
 	void			TellOwnerOnFinish();
 	
 private:
-	class Matcher*					m_pOwner;
+	Matcher*const					m_pOwner;
 	int64_t*						m_pllnSize;
 	double							m_lfKshirMinTotal;
 

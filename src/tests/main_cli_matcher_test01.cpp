@@ -31,8 +31,8 @@ int main(void)
 {
 
 #if 1
-	STwiss aTwiss;
-	ElemsSeq SS_Full(20);
+	STwiss Twiss0 = g_ctmInitialTwissMatrix;
+	ElemsSeq SS_Full;
 
 	SS_Full = CrLattice();
 
@@ -44,10 +44,6 @@ int main(void)
 	//pMainClass->CreateLattice( &SS_Full );
 	//pMatcher->CreateLattice( &SS_Full);
 	pMatcher->SetLattice(&SS_Full);
-
-
-	STwiss Twiss0 = GetTwiss(&aTwiss);
-
 
 	Twiss0.betaX = 3.89615;
 	Twiss0.alfaX = -0.109612;

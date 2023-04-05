@@ -13,10 +13,8 @@ ElemsSeq::~ElemsSeq()
 }
 
 
-ElemsSeq::ElemsSeq(const size_t& unDesiredNumber)
-	:	ElementBase(ElementBase::SEQUENCE,0.0),
-		m_Families(unDesiredNumber),
-		m_Elements(unDesiredNumber)
+ElemsSeq::ElemsSeq()
+	:	ElementBase(ElementBase::SEQUENCE,0.0)
 {
 	/// Piti jnjvi
 	m_MatrixTrans = g_ctmUniqTrMatrix;
@@ -28,7 +26,6 @@ ElemsSeq::ElemsSeq(const size_t& unDesiredNumber)
 
 ElemsSeq::ElemsSeq(const ElemsSeq& cM)
 	:	ElementBase(cM),
-		m_Families(cM.m_Families),
 		m_Elements(cM.m_Elements)
 {
 

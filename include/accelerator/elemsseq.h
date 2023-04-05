@@ -17,7 +17,7 @@ class ACCELERATOR_EXPORT ElemsSeq : public ElementBase
 {
 public:
 	~ElemsSeq()override;
-	ElemsSeq(const size_t& unDesiredNumber=3);
+	ElemsSeq();
 	ElemsSeq(const ElemsSeq& cM);
 
 

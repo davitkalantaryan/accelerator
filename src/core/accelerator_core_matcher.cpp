@@ -104,13 +104,13 @@ void* OptimAlg::CMatcherThread::ThreadFunc()
 
 
 
-OptimAlg::OptimAlg( const size_t& unNumberThreads, class Matcher* pOwner  )
+OptimAlg::OptimAlg(Matcher* pOwner  )
 	:	m_pOwner(pOwner),
 		m_pllnSize(NULL),
 		m_lfKshirMinTotal(0.),
-		m_ThreadItems(unNumberThreads),
 		m_bMatchingActive(0)
 {
+	(void)m_bWork;
 }
 
 
@@ -288,9 +288,7 @@ Matcher::Matcher( void* a_pGuiOwner, void (*a_fpFinished)(void*) )
 	:	m_pGuiOwner(a_pGuiOwner),
 		m_fpFinished(a_fpFinished),
 		m_pLattice(NULL),
-		m_pLatticeMinTot(NULL),
-		m_Inputs(8),
-		m_Outputs(8)
+		m_pLatticeMinTot(NULL)
 {
 	/*
 	struct STwiss
@@ -316,7 +314,7 @@ Matcher::Matcher( void* a_pGuiOwner, void (*a_fpFinished)(void*) )
 	//m_unLatticeInside = 0;
 	memset( &m_Params, 0, sizeof(SMatchFields) );
 	ElementBase::SetFlagStat( LATTICE_INSIDE, 0, &m_Params.m_ucFlags);
-	m_pOptimizer = new OptimAlg(10,this);
+	m_pOptimizer = new OptimAlg(this);
 
 	m_nMatchState = MATCH_NOT_DONE;
 

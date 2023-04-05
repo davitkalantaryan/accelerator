@@ -20,6 +20,12 @@ ACCELERATOR_EXPORT const STransferMatrix	g_ctmUniqTrMatrix = {
 };
 
 
+ACCELERATOR_EXPORT const struct STwiss	g_ctmInitialTwissMatrix = {
+	1., 0., 1., 0., 0., // betaX, alfaX, gammaX, etaX, etaPhX
+	1., 0., 1., 0., 0.  // betaY, alfaY, gammaY, etaY, etaPhY
+};
+
+
 CPPUTILS_END_C
 
 
@@ -104,12 +110,4 @@ ACCELERATOR_EXPORT SVector operator *(const STransferMatrix& a_M1, const SVector
 	}
 
 	return vectRet;
-}
-
-
-ACCELERATOR_EXPORT const STwiss& GetTwiss(STwiss* a_pBuffer)
-{
-	TwissObtainGamaX(a_pBuffer);
-	TwissObtainGamaY(a_pBuffer);
-	return *a_pBuffer;
 }

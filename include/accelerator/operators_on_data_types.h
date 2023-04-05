@@ -17,6 +17,7 @@
 CPPUTILS_BEGIN_C
 
 extern ACCELERATOR_EXPORT const STransferMatrix	g_ctmUniqTrMatrix;
+extern ACCELERATOR_EXPORT const struct STwiss	g_ctmInitialTwissMatrix;
 
 CPPUTILS_END_C
 
@@ -42,10 +43,11 @@ public:
 ACCELERATOR_EXPORT STransferMatrix operator *(const STransferMatrix& a_M1, const STransferMatrix& a_M2);
 ACCELERATOR_EXPORT STransferMatrix& operator *=(STransferMatrix& a_M1, const STransferMatrix& a_M2);
 ACCELERATOR_EXPORT SVector operator *(const STransferMatrix& a_M1, const SVector& a_V2);
-ACCELERATOR_EXPORT const STwiss& GetTwiss(STwiss* a_pBuffer);
+
 
 #define TwissObtainGamaX(_twiss_ptr)	(_twiss_ptr)->gamaX = (1. + ((_twiss_ptr)->alfaX) * ((_twiss_ptr)->alfaX)) / ((_twiss_ptr)->betaX)
 #define TwissObtainGamaY(_twiss_ptr)	(_twiss_ptr)->gamaY = (1. + ((_twiss_ptr)->alfaY) * ((_twiss_ptr)->alfaY)) / ((_twiss_ptr)->betaY)
+#define TwissObtainGammas(_twiss_ptr)	TwissObtainGamaX(_twiss_ptr);TwissObtainGamaY(_twiss_ptr)
 
 
 #endif // #ifndef ACCELERATOR_INCLUDE_ACCELERATOR_DATA_TYPES_H
