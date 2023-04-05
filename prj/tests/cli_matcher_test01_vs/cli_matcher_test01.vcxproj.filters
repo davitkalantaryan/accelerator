@@ -13,6 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\include">
+      <UniqueIdentifier>{01bc1818-af06-4240-acfe-855db25dd5fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\accelerator">
+      <UniqueIdentifier>{b9891f77-f718-4435-a38d-63a25c326259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\accelerator\std">
+      <UniqueIdentifier>{90bf6eca-95e5-431b-bc15-d70fc0bbbd05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{8bbecdf3-0888-4413-beb7-9a3987bc5e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\.old">
+      <UniqueIdentifier>{f41eaf7f-97a4-48c9-9ef0-dad0ae25bf16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src">
+      <UniqueIdentifier>{f4457bc0-3c82-42d9-b76f-8df53ca9b844}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\.old">
+      <UniqueIdentifier>{4a9ebcf5-3cca-4bff-9efe-f122bef7d01d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\tests\main_cli_matcher_test01.cpp">
@@ -21,16 +42,181 @@
     <ClCompile Include="..\..\..\src\core\accelerator_core_operators_on_data_types.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_elementbase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\caperture.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\cbend.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\cbendr.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\cdrift.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\clinear.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\combinefuncmagnet.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\commondialog.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\cquad.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\csextupole.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\elementbase.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\elementcreator.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\elemsseq.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\linearbase.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\matcher.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\.old\matching_main.cpp">
+      <Filter>Source Files\src\.old</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_elementcreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_linearbase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_cdrift.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_cquad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_cbend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_cbendr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_elemsseq.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_clinear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_csextupole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_caperture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_combinefuncmagnet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_matcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\accelerator_core_comandsfl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\accelerator\data_types.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\include\accelerator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\accelerator\export_symbols.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\include\accelerator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\accelerator\operators_on_data_types.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\include\accelerator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\std\string.h">
+      <Filter>Header Files\include\accelerator\std</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\elementbase.h">
+      <Filter>Header Files\include\accelerator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\std\stdio.h">
+      <Filter>Header Files\include\accelerator\std</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\elementcreator.h">
+      <Filter>Header Files\include\accelerator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\caperture.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\cbend.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\cbendr.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\cdrift.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\clinear.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\ComandsFl.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\combinefuncmagnet.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\commondialog.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\cquad.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\csextupole.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\elementbase.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\elementcreator.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\elemsseq.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\linearbase.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\matcher.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\stdafx.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\structs_accl.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\.old\vectoroftype2.h">
+      <Filter>Header Files\src\.old</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\elemsseq.h">
+      <Filter>Header Files\include\accelerator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\matcher.h">
+      <Filter>Header Files\include\accelerator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\linearbase.h">
+      <Filter>Header Files\include\accelerator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\accelerator\comandsfl.h">
+      <Filter>Header Files\include\accelerator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

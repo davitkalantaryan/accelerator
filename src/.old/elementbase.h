@@ -2,6 +2,10 @@
 #ifndef __elementbase_h__
 #define __elementbase_h__
 
+#ifdef ACCELERATOR_IGNORE_OLD_INCLUDES
+#error "Old include is used"
+#endif
+
 #define		CREATED_INSIDE		0
 #define		IS_RING				1
 
@@ -28,8 +32,9 @@
 
 #include "structs_accl.h"
 
-#ifdef WIN32
-#define snprintf _snprintf
+#ifdef _WIN32
+#define snprintf(_buf,_count,...)	_snprintf_s(_buf,_count,_count,__VA_ARGS__)
+#define strncpy(_dst,_src,_count)	strcpy_s(_dst,_count,_src)
 #endif
 
 namespace DAVIT_CLASSES

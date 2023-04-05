@@ -1,59 +1,40 @@
-#ifndef __linearbase_h__
-#define __linearbase_h__
+//
+// file:            linearbase.hpp
+// path:			include/accelerator/linearbase.hpp
+// created on:		2023 Apr 04
+// created by:		Davit Kalantaryan (davit.kalantaryan@desy.de)
+//
+
+#pragma once
 
 
-#include "elementbase.h"
+#include <accelerator/elementbase.h>
+#include <accelerator/operators_on_data_types.h>
 
-#ifdef ACCELERATOR_IGNORE_OLD_INCLUDES
-#error "Old include is used"
-#endif
+namespace DAVIT_CLASSES{
 
-using namespace DAVIT_CLASSES;
-
-class LinearBase : public ElementBase
+class ACCELERATOR_EXPORT LinearBase : public ElementBase
 {
 public:
+	virtual ~LinearBase() override;
 	LinearBase( const int& Kind = LINEARBASE, const double& Length = 0. );
-
-	virtual ~LinearBase(){}
 	
-	virtual ElementBase*		Clone()const;
-
-	virtual void				EQUATING( ElementBase* pSource );
-	
-	virtual void				SetFieldsPassive( const int& WhichParam, const double& Param, const int& Index );
-
-	virtual void				SetFields( const int& WhichParam, const double& Param, const int& Index );
-	
-	virtual int					GetIndex(const char*)const;
-	
-	inline const SMatrix&		GetMatrixTrans()const
-	{
-		return m_MatrixTrans;
-		
-	}
-	
-	
-	virtual inline SMatrix		GetMatrixTrans(	const double& a_lfS )const;
-
-	inline const SMatrix&		GetMatrixTwiss()const
-	{
-		return m_MatrixTwiss;
-		
-	}
-	
-	
-	virtual inline SMatrix		GetMatrixTwiss(	const double& a_lfS )const;
-
+	virtual ElementBase*		Clone()const override;
+	virtual void				EQUATING( ElementBase* pSource ) override;
+	virtual void				SetFieldsPassive( const int& WhichParam, const double& Param, const int& Index ) override;
+	virtual void				SetFields( const int& WhichParam, const double& Param, const int& Index ) override;
+	virtual int					GetIndex(const char*)const override;
+	const SMatrix&				GetMatrixTrans()const override;
+	virtual SMatrix				GetMatrixTrans(	const double& a_lfS )const override;
+	const SMatrix&				GetMatrixTwiss()const override;
+	virtual SMatrix				GetMatrixTwiss(	const double& a_lfS )const;
 	void						GetTwissAllX(	
 										const double& beta0, const double& alfa0, const double& gama,
 										double*const& pBetaF, double*const& pAlfaF, double*const& pGamaF )const;
-
 	void						GetTwissAllY(
 										const double& beta0, const double& alfa0, const double& gama,
 										double*const& pBetaF, double*const& pAlfaF, double*const& pGamaF )const;
-
-		
+	
 	virtual double				DfiX(
 									const double& beta0, const double& alfa0, const double& gama0 = -1.,
 									double*const& pBetaF = 0, double*const& pAlfaF = 0, double*const& pGamaF = 0,
@@ -276,5 +257,4 @@ protected:
 	SMatrix			m_MatrixTwiss;
 };
 
-
-#endif/* #ifndef __linearbase_h__ */
+}  //  namespace DAVIT_CLASSES{

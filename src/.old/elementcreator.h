@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include "elementbase.h"
 
+#ifdef ACCELERATOR_IGNORE_OLD_INCLUDES
+#error "Old include is used"
+#endif
+
 namespace DAVIT_CLASSES
 {
 

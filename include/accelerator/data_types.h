@@ -14,14 +14,17 @@
 
 CPPUTILS_BEGIN_C
 
-typedef struct SCoordVector{
+typedef struct SVector6{
 	double x;
 	double px;
 	double y;
 	double py;
 	double z;
 	double delta;
-}SCoordVector;
+}SVector6;
+
+typedef struct SVector6 SCoordVector;
+typedef struct SVector6 SVector;
 
 
 typedef struct STwiss{
@@ -36,11 +39,10 @@ typedef struct STwiss{
 	double gamaY;
 	double etaY;
 	double etaPhY;
-
 }STwiss;
 
 
-typedef struct STransferMatrix{
+typedef struct SMatrix66{
 	double m11;
 	double m12;
 	double m13;
@@ -82,7 +84,10 @@ typedef struct STransferMatrix{
 	double m64;
 	double m65;
 	double m66;
-}STransferMatrix;
+}SMatrix66;
+
+typedef struct SMatrix66 STransferMatrix;
+typedef struct SMatrix66 SMatrix;
 
 
 CPPUTILS_END_C

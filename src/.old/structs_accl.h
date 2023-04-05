@@ -6,6 +6,10 @@
 #include <memory.h>		// For func. memset
 
 
+#ifdef ACCELERATOR_IGNORE_OLD_INCLUDES
+#error "Old include is used"
+#endif
+
 #ifndef int64_tt
 #ifdef WIN32
 #define int64_tt __int64

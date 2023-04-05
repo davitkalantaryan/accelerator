@@ -8,7 +8,6 @@
 #include <accelerator/operators_on_data_types.h>
 
 
-
 CPPUTILS_BEGIN_C
 
 ACCELERATOR_EXPORT const STransferMatrix	g_ctmUniqTrMatrix = {
@@ -86,4 +85,31 @@ ACCELERATOR_EXPORT STransferMatrix& operator *=(STransferMatrix& a_M1, const STr
 {
 	a_M1 = a_M1 * a_M2;
 	return a_M1;
+}
+
+
+ACCELERATOR_EXPORT SVector operator *(const STransferMatrix& a_M1, const SVector& a_V2)
+{
+	size_t j;
+	SVector vectRet;
+	CVectorBase<SVector>& refVectRet = (CVectorBase<SVector>&)vectRet;
+	const CMatrixBase<STransferMatrix, SVector>& M1 = (const CMatrixBase<STransferMatrix, SVector>&)a_M1;
+	const CVectorBase<SVector>& V2 = (const CVectorBase<SVector>&)a_V2;
+
+	for (size_t i(0); i < 6; ++i) {
+		refVectRet[i] = 0.;
+		for (j = 0; j < 6; ++j) {
+			refVectRet[i] += M1[i][j] * V2[j];
+		}
+	}
+
+	return vectRet;
+}
+
+
+ACCELERATOR_EXPORT const STwiss& GetTwiss(STwiss* a_pBuffer)
+{
+	TwissObtainGamaX(a_pBuffer);
+	TwissObtainGamaY(a_pBuffer);
+	return *a_pBuffer;
 }

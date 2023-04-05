@@ -1,77 +1,52 @@
-#ifndef __elemsseq_h__
-#define __elemsseq_h__
+//
+// file:            elemsseq.hpp
+// path:			include/accelerator/elemsseq.hpp
+// created on:		2023 Apr 04
+// created by:		Davit Kalantaryan (davit.kalantaryan@desy.de)
+//
 
-#ifdef ACCELERATOR_IGNORE_OLD_INCLUDES
-#error "Old include is used"
-#endif
+#pragma once
 
-#include "elementbase.h"
-#include "vectoroftype2.h"
+#include <accelerator/export_symbols.h>
+#include <accelerator/elementbase.h>
+#include <vector>
 
-namespace DAVIT_CLASSES
-{
+namespace DAVIT_CLASSES{
 
-class ElemsSeq : public ElementBase
+class ACCELERATOR_EXPORT ElemsSeq : public ElementBase
 {
 public:
+	~ElemsSeq()override;
 	ElemsSeq(const size_t& unDesiredNumber=3);
-
 	ElemsSeq(const ElemsSeq& cM);
 
 
 	ElementBase*	Clone()const;
-
 	ElemsSeq&		operator=(const ElemsSeq& aM);
-
 	void			EQUATING( ElementBase* pSource );
-
 	void			AddElement(ElementBase* pElement,int IfCreate);
-
 	void			AddElement(const ElementBase& aElement);
-
 	void			RemoveElement(const int& a_nIndex);
-
 	void			RemoveFamily(const int& a_nIndex);
-
 	void			RemoveFamily(const char* cpcFamName);
-
-	//const double&	GetFields( const int& /*nWhich*/ )const{return m_lfL;}
-
 	void			SetFieldsPassive( const int& a_nWhich, const double& a_lfParam, const int& a_nIndex );
-
 	void			SetFields( const int& a_nWhich, const double& a_lfParam, const int& a_nIndex );
-
 	void			GetTwissParam(	double& lfRet, const int& nWhere1, const int& whichParam,
 									const STwiss& aTwis0, STwiss*const& pTwisF)const;
-
 	int				GetIndex(const char* cpcFamName)const;
-
 	void			ObtainMatrixTrans();
-
 	void			ObtainMatrixTwiss( );
-
 	void			WriteToFile1( FILE* a_File )const;
-
 	void			ReadFromFile1( FILE* aFile, void* pReserved, void* pFounded );
-
 	void			WriteOptiM( FILE*const& a_File, const double& a_lfReserve )const;
-
 	void			LoadFromOptimString( const char*const& a_pcBuff, int a_nRead );
-
 	const SMatrix&	GetMatrixTrans()const;
-
 	const SMatrix&	GetMatrixTwiss()const;
-	
 	SVector			Track( const SVector& coord0, bool*const& /*survive*/, int*const& /*losseIndex*/ );
-
-	const int&		NumberOfDevices()const;
-
-	const int&		NumberOfFamilies()const;
-
+	int				NumberOfDevices()const;
+	int				NumberOfFamilies()const;
 	ElementBase*	operator[](const int& a_nIndex);
-
 	ElementBase*	operator()(const int& a_nIndex);
-
 	SMatrix			GetMatrixTrans(	const double& a_lfS )const;
 
 private:
@@ -79,8 +54,8 @@ private:
 
 
 private:
-	VectorOfType2<ElementBase*>		m_Families;
-	VectorOfType2<int>				m_Elements;
+	::std::vector<ElementBase*>		m_Families;
+	::std::vector<int>				m_Elements;
 
 	SMatrix							m_MatrixTrans;
 	SMatrix							m_MatrixTwiss;
@@ -97,6 +72,3 @@ ElemsSeq operator&( const ElemsSeq& eS, const ElementBase& aE2 );
 
 };// namespace DAVIT_CLASSES
 
-
-
-#endif/* #ifndef __elemsseq_h__ */

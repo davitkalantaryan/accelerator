@@ -1,23 +1,27 @@
-#ifndef __matcher_h__
-#define __matcher_h__
+//
+// file:            matcher.hpp
+// path:			include/accelerator/matcher.hpp
+// created on:		2023 Apr 04
+// created by:		Davit Kalantaryan (davit.kalantaryan@desy.de)
+//
+
+#pragma once
+
+#include <accelerator/export_symbols.h>
+#include <accelerator/elementbase.h>
+#include <thread>
+#include <vector>
+#include <stdint.h>
+#include <signal.h>
+
 
 #define		LATTICE_INSIDE		0
 #define		TRY_CLOSE_TWISS		1
 
-#ifdef ACCELERATOR_IGNORE_OLD_INCLUDES
-#error "Old include is used"
-#endif
 
-#include <signal.h>
-#include "elementbase.h"
-#include <thread>
+namespace DAVIT_CLASSES {
 
-using namespace DAVIT_CLASSES;
-
-
-
-struct SInputParams
-{
+struct SInputParams{
 	int		nWhichChange;	// This show which field of magnet can be changed (curent, length, ...)
 	int		nIndex;
 	double	par0;
@@ -28,8 +32,7 @@ struct SInputParams
 
 
 
-struct SParamSingle
-{
+struct SParamSingle{
 	int		m_nWhere;	// Magnet Index	(-2 means end of lattice)
 	int		whichParam;
 	double	m_lfKoef;
@@ -37,8 +40,7 @@ struct SParamSingle
 
 
 
-struct SParamsToMatch
-{
+struct SParamsToMatch{
 	double			ParamValue;
 	double			Accuracy;
 	double			lfImportance;
@@ -51,7 +53,7 @@ struct SParamsToMatch
 class Matcher;
 
 
-class OptimAlg
+class ACCELERATOR_EXPORT OptimAlg
 {
 public:
 	class CMatcherThread
@@ -64,10 +66,10 @@ public:
 		ElementBase*	m_pLatticeMin;
 		double			m_lfKshirMin;
 
-		int64_tt		m_lli1;
-		int64_tt		m_lli2;
+		int64_t		m_lli1;
+		int64_t		m_lli2;
 		
-		int64_tt*		m_pllnStep;
+		int64_t*		m_pllnStep;
 
 		STwiss			m_TwissF;
 
@@ -85,25 +87,21 @@ public:
 	
 public:
 	OptimAlg( const size_t& unNumberThreads, class Matcher* pOwner  );
-
 	~OptimAlg();
 
 	void			StartMatch(int nThreadsNum);
 
 private:
 	void*			FinalMatcher();
-
 	static void*	FinalMatcherStat(void*);
-
 	void			TellOwnerOnFinish();
-
 	
 private:
 	class Matcher*					m_pOwner;
-	int64_tt*						m_pllnSize;
+	int64_t*						m_pllnSize;
 	double							m_lfKshirMinTotal;
 
-	VectorOfType2<CMatcherThread*>	m_ThreadItems;
+	::std::vector <CMatcherThread*>	m_ThreadItems;
 
 	sig_atomic_t					m_bMatchingActive;
 	::std::thread					m_MatcherTHread;
@@ -115,8 +113,7 @@ private:
 
 
 
-struct SMatchFields
-{
+struct SMatchFields{
 	//unsigned int					m_unLatticeInside : 1;
 	unsigned char	m_ucFlags;
 	STwiss			m_Twiss0;
@@ -124,61 +121,42 @@ struct SMatchFields
 
 
 
-class Matcher
+class ACCELERATOR_EXPORT Matcher
 {
 	friend class OptimAlg;
 	friend class OptimAlg::CMatcherThread;
 public:
 	enum _MATCH_STATES{ MATCH_NOT_DONE, MATCH_DONE};
 
+	~Matcher();
 	Matcher( void* a_pGuiOwner, void (*a_fpFinished)(void*) );
 
-	~Matcher();
-
 	void			CreateLattice( ElementBase* pSource );
-
 	void			SetLattice( ElementBase* pLattice );
-
 	void			AddInput( const SInputParams& a_Input );
-
 	void			AddInput( const char* cpcFamName, int nWhich, double Param0, double ParamF, int nNumber );
-
 	void			AddInput( int nWhich, int nIndex, double lfParam0, double lfParamF, double DeltaParam );
-
 	void			AddInput( int nWhich, int nIndex, double Param0, double ParamF, int nNumber );
-
 	void			AddOutput(	double ParamValue, double Accuracy, double Importance,
 								int whichParam1, int nWhere1=END_OF_LATTICE, double Koef1=1.,
 								int whichParam2=MTR11, int nWhere2=NO_INDEX, double Koef2=1.  );
-
 	void			AddOutput( const SParamsToMatch& a_Output );
-
 	double			GetKshir(const ElementBase* pTestLattice, bool*const& bFound, STwiss*const& pTwissF)const;
-
 	void			StartMatch(int nThreadsNum);
-
 	void			PauseMatch();
-
 	void			StopMatch();
-
 	const STwiss&	GetTwiss0()const;
-
 	void			SetTwiss0(const STwiss& Twiss0);
-
 	STwiss*			GetTwissPtr(){return &m_Params.m_Twiss0;}
-
 	void			LoadMinLattice();
-
 	void			SetMatchFields1(const SMatchFields& a_Matcher );
-
 	void			SetAnCorrMatchFields1(SMatchFields* a_pMatcherFlds );
-
-	VectorOfType2<SInputParams>* GetInputs()
+	::std::vector <SInputParams>* GetInputs()
 	{
 		return &m_Inputs;
 	}
 
-	VectorOfType2<SParamsToMatch>* GetOutputs()
+	::std::vector<SParamsToMatch>* GetOutputs()
 	{
 		return &m_Outputs;
 	}
@@ -198,8 +176,8 @@ private:
 
 	ElementBase*					m_pLattice;
 	ElementBase*					m_pLatticeMinTot;
-	VectorOfType2<SInputParams>		m_Inputs;
-	VectorOfType2<SParamsToMatch>	m_Outputs;	
+	::std::vector<SInputParams>		m_Inputs;
+	::std::vector<SParamsToMatch>	m_Outputs;
 
 	OptimAlg*						m_pOptimizer;
 
@@ -209,5 +187,4 @@ private:
 };
 
 
-
-#endif/* #ifndef __matcher_h__ */
+}  //  namespace DAVIT_CLASSES{
