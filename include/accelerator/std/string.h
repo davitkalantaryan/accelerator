@@ -8,9 +8,9 @@
 #ifndef ACCELERATOR_INCLUDE_ACCELERATOR_STD_STRING_H
 #define ACCELERATOR_INCLUDE_ACCELERATOR_STD_STRING_H
 
-
+#include <cinternal/disable_compiler_warnings.h>
 #include <string.h>
-
+#include <cinternal/undisable_compiler_warnings.h>
 
 #ifdef _MSC_VER
 #define strncpy(_dst,_src,_count)	strcpy_s(_dst,_count,_src)

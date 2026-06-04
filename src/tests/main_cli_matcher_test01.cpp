@@ -15,7 +15,9 @@
 #include <accelerator/cbendr.h>
 #include <accelerator/csextupole.h>
 #include <accelerator/comandsfl.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <iostream>
+#include <cinternal/undisable_compiler_warnings.h>
 
 
 using namespace std;
@@ -35,8 +37,6 @@ int main(void)
 	ElemsSeq SS_Full;
 
 	SS_Full = CrLattice();
-
-	SS_Full.ObtainMatrixTrans();
 
 	//CMainClass* pMainClass = CMainClass::Create( "C:\\InfoDDD.txt" ) ;
 	Matcher* pMatcher = new Matcher(NULL, MatchingFinishedClbk);

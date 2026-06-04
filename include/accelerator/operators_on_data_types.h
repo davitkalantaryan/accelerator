@@ -11,7 +11,9 @@
 
 #include <accelerator/export_symbols.h>
 #include <accelerator/data_types.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <stddef.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 
 CPPUTILS_BEGIN_C

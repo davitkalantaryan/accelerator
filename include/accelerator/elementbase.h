@@ -10,7 +10,9 @@
 #include <accelerator/export_symbols.h>
 #include <accelerator/operators_on_data_types.h>
 #include <accelerator/std/stdio.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <math.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 #define		CREATED_INSIDE		0
 #define		IS_RING				1
@@ -104,8 +106,8 @@ public:
 	void					SetFlagHard(unsigned char Flag);
 	void					SetFlag(int Bit, int Value);
 	static void				SetFlagStat(int Bit, int Value, unsigned char* pFlag);
-	int						GetFlag(int Bit);
-	static int				GetFlagStat(int Bit,unsigned char Flag);
+	int						GetFlag(int Bit) const noexcept;
+	static int				GetFlagStat(int Bit,unsigned char Flag) noexcept;
 	const int&				GetKind()const{ return m_nKind; }
 
 	//////////////////////////////////////////////////////////////////////////////////////////////

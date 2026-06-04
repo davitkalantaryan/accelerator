@@ -8,8 +8,9 @@
 #ifndef ACCELERATOR_INCLUDE_ACCELERATOR_STD_STDIO_H
 #define ACCELERATOR_INCLUDE_ACCELERATOR_STD_STDIO_H
 
-
+#include <cinternal/disable_compiler_warnings.h>
 #include <stdio.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 
 #ifdef _MSC_VER

@@ -9,7 +9,9 @@
 
 
 #include <accelerator/export_symbols.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <stdio.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 namespace DAVIT_CLASSES{
 

@@ -9,10 +9,12 @@
 
 #include <accelerator/export_symbols.h>
 #include <accelerator/elementbase.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <thread>
 #include <vector>
 #include <stdint.h>
 #include <signal.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 
 #define		LATTICE_INSIDE		0

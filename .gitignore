@@ -63,6 +63,7 @@
 !/prj/*/*_vs/*.vcxproj.filters
 !/prj/*/*_vs/*.props
 #
+!/prj/*/*_mkfl/raw
 !/prj/*/*_mkfl/*Makefile*
 #
 !/prj/*/*_mult/*Makefile
@@ -78,9 +79,13 @@
 !/workspaces/*_vs/*.sln
 !/workspaces/*_vs/*.vcxproj
 !/workspaces/*_vs/*.vcxproj.filters
+#
+!/workspaces/*_mkfl/*Makefile*
 
 #/scripts/test_include_sourse.sh
 
 prj/tests/googletest_mult/Makefile.googletest_getter
 
 /.private
+
+*.cpp.autosave

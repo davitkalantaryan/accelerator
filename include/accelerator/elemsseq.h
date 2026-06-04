@@ -19,10 +19,12 @@ public:
 	~ElemsSeq()override;
 	ElemsSeq();
 	ElemsSeq(const ElemsSeq& cM);
+    ElemsSeq(ElemsSeq&& a_mM) noexcept;
 
 
 	ElementBase*	Clone()const;
 	ElemsSeq&		operator=(const ElemsSeq& aM);
+    ElemsSeq&		operator=(ElemsSeq&& a_mM);
 	void			EQUATING( ElementBase* pSource );
 	void			AddElement(ElementBase* pElement,int IfCreate);
 	void			AddElement(const ElementBase& aElement);
@@ -34,8 +36,6 @@ public:
 	void			GetTwissParam(	double& lfRet, const int& nWhere1, const int& whichParam,
 									const STwiss& aTwis0, STwiss*const& pTwisF)const;
 	int				GetIndex(const char* cpcFamName)const;
-	void			ObtainMatrixTrans();
-	void			ObtainMatrixTwiss( );
 	void			WriteToFile1( FILE* a_File )const;
 	void			ReadFromFile1( FILE* aFile, void* pReserved, void* pFounded );
 	void			WriteOptiM( FILE*const& a_File, const double& a_lfReserve )const;
@@ -51,14 +51,20 @@ public:
 
 private:
 	void			ObtainAll();
+    void	        ObtainMatrixTrans() override;
+    void	        ObtainMatrixTwiss() override;
+    inline void     CopyFromPart(const ElemsSeq& a_cM);
+    inline void     MoveFromPart(ElemsSeq* a_mM_p) noexcept;
 
 
 private:
 	::std::vector<ElementBase*>		m_Families;
 	::std::vector<int>				m_Elements;
+    ::std::vector<SMatrix>			m_MatrixesTrans;
+    ::std::vector<SMatrix>			m_MatrixesTwiss;
 
-	SMatrix							m_MatrixTrans;
-	SMatrix							m_MatrixTwiss;
+	SMatrix							m_MatrixTrans2;
+	SMatrix							m_MatrixTwiss2;
 };
 
 

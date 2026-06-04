@@ -2,96 +2,111 @@
 #include <accelerator/elemsseq.h>
 #include <accelerator/clinear.h>
 #include <accelerator/elementcreator.h>
+#include <cinternal/disable_compiler_warnings.h>
+#include <utility>
+#include <cinternal/undisable_compiler_warnings.h>
 
 
 namespace DAVIT_CLASSES {
 
 
+
+inline void ElemsSeq::CopyFromPart(const ElemsSeq& a_cM)
+{
+    m_Elements = a_cM.m_Elements;
+    m_MatrixesTrans = a_cM.m_MatrixesTrans;
+    m_MatrixesTwiss = a_cM.m_MatrixesTwiss;
+    m_MatrixTrans2 = a_cM.m_MatrixTrans2;
+    m_MatrixTwiss2 = a_cM.m_MatrixTwiss2;    
+
+    ElementBase* pElementToAdd;
+
+    typedef const ElementBase* ConstElementBasePtr;
+    typedef ElementBase* ElementBasePtr;
+    const size_t unFamsSize(a_cM.m_Families.size());
+    const ConstElementBasePtr* const pInpFamsPtrArray = a_cM.m_Families.data();
+    m_Families.resize(unFamsSize);
+    ElementBasePtr* const pOutFamsPtrArray = m_Families.data();
+
+    for (size_t i(0); i < unFamsSize; ++i){
+        if (pInpFamsPtrArray[i]->GetFlag(CREATED_INSIDE))
+        {
+            pElementToAdd = pInpFamsPtrArray[i]->Clone();
+        }
+        else
+        {
+            pElementToAdd = const_cast<ElementBase*>(pInpFamsPtrArray[i]);
+        }
+
+        pOutFamsPtrArray[i] = pElementToAdd;
+    }  //  for (size_t i(0); i < unFamsSize; ++i){
+}
+
+
+inline void ElemsSeq::MoveFromPart(ElemsSeq* a_mM_p) noexcept
+{
+    m_Elements = ::std::move(a_mM_p->m_Elements);
+    m_MatrixesTrans = ::std::move(a_mM_p->m_MatrixesTrans);
+    m_MatrixesTwiss = ::std::move(a_mM_p->m_MatrixesTwiss);
+    m_MatrixTrans2 = a_mM_p->m_MatrixTrans2;
+    m_MatrixTwiss2 = a_mM_p->m_MatrixTwiss2;
+    m_Families = ::std::move(a_mM_p->m_Families);
+}
+
+
 ElemsSeq::~ElemsSeq()
 {
-	//
+    typedef ElementBase* ElementBasePtr;
+    const size_t unFamsSize(m_Families.size());
+    const ElementBasePtr* const pFamsPtrArray = m_Families.data();
+
+    for (size_t i(0); i < unFamsSize; ++i) {
+        if (pFamsPtrArray[i]->GetFlag(CREATED_INSIDE))
+        {
+            delete pFamsPtrArray[i];
+        }
+    }  //  for (size_t i(0); i < unFamsSize; ++i){
 }
 
 
 ElemsSeq::ElemsSeq()
 	:	ElementBase(ElementBase::SEQUENCE,0.0)
 {
-	/// Piti jnjvi
-	m_MatrixTrans = g_ctmUniqTrMatrix;
-	m_MatrixTwiss = g_ctmUniqTrMatrix;
-	/// End Piti jnjvi
+	m_MatrixTrans2 = g_ctmUniqTrMatrix;
+	m_MatrixTwiss2 = g_ctmUniqTrMatrix;
 }
 
 
 
 ElemsSeq::ElemsSeq(const ElemsSeq& cM)
-	:	ElementBase(cM),
-		m_Elements(cM.m_Elements)
+	:	
+    ElementBase(cM)
 {
-
-	/// Piti jnjvi
-	m_MatrixTrans = cM.m_MatrixTrans;
-	m_MatrixTwiss = cM.m_MatrixTwiss;
-	/// End Piti jnjvi
-
-
-	ElementBase* pElementToAdd;
-
-	size_t unSize(cM.m_Families.size());
-
-	for( size_t i(0); i < unSize; ++i )
-	{
-		if(cM.m_Families[i]->GetFlag(CREATED_INSIDE))
-		{
-			pElementToAdd = cM.m_Families[i]->Clone();
-		}
-		else
-		{
-			pElementToAdd = cM.m_Families[i];
-		}
-
-		m_Families.push_back(pElementToAdd);
-	}
-
+    CopyFromPart(cM);
 }
 
+
+ElemsSeq::ElemsSeq(ElemsSeq&& a_mM) noexcept
+    :
+    ElementBase(std::move(a_mM))
+{
+    MoveFromPart(&a_mM);
+}
 
 
 ElemsSeq& ElemsSeq::operator=(const ElemsSeq& cM)
 {
-
-	/// Piti jnjvi
-	m_MatrixTrans = cM.m_MatrixTrans;
-	m_MatrixTwiss = cM.m_MatrixTwiss;
-	/// End Piti jnjvi
-
-
-	ElementBase::operator=(cM);
-
-	m_Families = cM.m_Families;
-	m_Families.clear();
-	
-	m_Elements = cM.m_Elements;
-	
-	ElementBase* pElementToAdd;
-
-	size_t unSize(cM.m_Families.size());
-
-	for( size_t i(0); i < unSize; ++i )
-	{
-		if(cM.m_Families[i]->GetFlag(CREATED_INSIDE))
-		{
-			pElementToAdd = cM.m_Families[i]->Clone();
-		}
-		else
-		{
-			pElementToAdd = cM.m_Families[i];
-		}
-
-		m_Families.push_back(pElementToAdd);
-	}
-
+    ElementBase::operator=(cM);
+    CopyFromPart(cM);
 	return *this;
+}
+
+
+ElemsSeq& ElemsSeq::operator=(ElemsSeq&& a_mM)
+{
+    ElementBase::operator=(std::move(a_mM));
+    MoveFromPart(&a_mM);
+    return *this;
 }
 
 
@@ -120,56 +135,46 @@ void ElemsSeq::EQUATING( ElementBase* a_pSource )
 void ElemsSeq::AddElement(const ElementBase& aElement)
 {
 	ElementBase* pElement = aElement.Clone();
-
+    pElement->SetFlag(CREATED_INSIDE, 1);
 	ElemsSeq::AddElement(pElement,0);
-
-	pElement->SetFlag(CREATED_INSIDE,1);
 }
 
 
 
 void ElemsSeq::AddElement(ElementBase* a_pElement,int a_nIfCreate)
 {
-
 	m_lfL += a_pElement->GetLength();
-	m_MatrixTrans *= a_pElement->GetMatrixTrans();
+	m_MatrixTrans2 = a_pElement->GetMatrixTrans() * m_MatrixTrans2;
+    m_MatrixesTrans.push_back(m_MatrixTrans2);
+    m_MatrixTwiss2 = a_pElement->GetMatrixTwiss() * m_MatrixTwiss2;
+    m_MatrixesTwiss.push_back(m_MatrixTwiss2);
 
 	///////////////////////////////////////////////////////////////
-	size_t i,unSize(m_Families.size());
+    size_t i;
+    const size_t unSize(m_Families.size());
 
-	bool bExist, bNotExist(true);
-
-	for( i = 0; bNotExist && i < unSize; ++i )
-	{
-		bExist = m_Families[i]->IsSameFamily( a_pElement->GetFamName() );
-		bNotExist = !bExist;
-
-		if( bExist )
+	for( i = 0; i < unSize; ++i ){
+		if(m_Families[i]->IsSameFamily(a_pElement->GetFamName()))
 		{
 			m_Elements.push_back((int)i);
+            if (a_pElement->GetFlag(CREATED_INSIDE)) {
+                delete a_pElement;
+            }
+            return;
 		}
-	}
-
-
-	if( !bNotExist )
-	{
-		return;
-	}
-
+	}  //  for( i = 0; i < unSize; ++i ){
 
 	ElementBase* pElementToAdd;
 
-	if(a_nIfCreate)
-		pElementToAdd = a_pElement->Clone();		
+    if (a_nIfCreate) {
+        pElementToAdd = a_pElement->Clone();
+        pElementToAdd->SetFlag(CREATED_INSIDE, a_nIfCreate);
+    }
 	else
 		pElementToAdd = a_pElement;
 
-
-	pElementToAdd->SetFlag(CREATED_INSIDE,a_nIfCreate);
-
-	i = m_Families.size();
 	m_Families.push_back(pElementToAdd);
-	m_Elements.push_back((int)i);
+	m_Elements.push_back((int)unSize);
 }
 
 
@@ -181,52 +186,53 @@ void ElemsSeq::RemoveElement(const int& a_nIndex)
 	if(a_nIndex >= nSize)
 		return;
 
-	//const char* cpcFamName = m_Families[m_Elements[a_nIndex]]->GetFamName();
-	int nFamily = m_Elements[a_nIndex];
+    bool bNotFound(true);
+    int i;
+	const int nFamily = m_Elements[a_nIndex];
 
 	m_lfL -= m_Families[nFamily]->GetLength();
+    m_MatrixTrans2 = (a_nIndex > 0) ? m_MatrixesTrans[a_nIndex - 1] : g_ctmUniqTrMatrix;
+    m_MatrixTwiss2 = (a_nIndex > 0) ? m_MatrixesTwiss[a_nIndex - 1] : g_ctmUniqTrMatrix;
 	m_Elements.erase(m_Elements.begin() + a_nIndex );
+    m_MatrixesTrans.erase(m_MatrixesTrans.begin() + a_nIndex);
+    m_MatrixesTwiss.erase(m_MatrixesTwiss.begin() + a_nIndex);
+    SMatrix* const pMatrTransPtr = const_cast<SMatrix*>(m_MatrixesTrans.data());
+    SMatrix* const pMatrTwissPtr = const_cast<SMatrix*>(m_MatrixesTwiss.data());
 	--nSize;
 
-	bool bFound(false);
-	int i;
+    for (i = a_nIndex; i < nSize; ++i) {
+        m_MatrixTrans2 = m_Families[m_Elements[i]]->GetMatrixTrans() * m_MatrixTrans2;
+        m_MatrixTwiss2 = m_Families[m_Elements[i]]->GetMatrixTwiss() * m_MatrixTwiss2;
+        pMatrTransPtr[i] = m_MatrixTrans2;
+        pMatrTwissPtr[i] = m_MatrixTwiss2;
+        if (bNotFound) {
+            if (m_Elements[i] == nFamily) {
+                bNotFound = false;
+            }  //  if (m_Elements[i] == nFamily) {
+        }  //  if (bNotFound) {
+    }  //  for (i = a_nIndex; i < nSize; ++i) {
 
-	for( i = 0; i < nSize; ++i )
-	{
-		//if(i==a_nIndex)continue;
+	if(bNotFound){
+        for (i = 0; i < a_nIndex; ++i){
+            if (m_Elements[i] == nFamily){
+                return;
+            }  //  if (m_Elements[i] == nFamily){
+        }  //  for (i = 0; i < a_nIndex; ++i){
+	}  //  if(bNotFound){
 
-		if(m_Elements[i]==nFamily)
-		{
-			bFound = true;
-			break;
-		}
-	}
-
-
-	if( !bFound )
-	{
-		m_Families.erase(m_Families.begin()+ nFamily);
-
-		for( i = 0; i < nSize; ++i )
-		{
-			if( m_Elements[i]>nFamily)
-			{
-				--m_Elements[i];
-			}
-		}
-	}
-
-	
+    ElementBase* const pFamilyToRemove = m_Families[nFamily];
+    if(pFamilyToRemove->GetFlag(CREATED_INSIDE)) {
+        delete pFamilyToRemove;
+    }
+    m_Families.erase(m_Families.begin() + nFamily);
 }
 
 
 
 void ElemsSeq::RemoveFamily(const char* cpcFamName)
 {
-	int nFamily = ElemsSeq::GetIndex(cpcFamName);
-
-	if( nFamily == NO_INDEX )return;
-
+	const int nFamily = ElemsSeq::GetIndex(cpcFamName);
+	if( nFamily < 0 )return;
 	ElemsSeq::RemoveFamily(nFamily);
 }
 
@@ -239,13 +245,14 @@ void ElemsSeq::RemoveFamily(const int& a_nIndex)
 	if(a_nIndex >= nSizeFam)
 		return;
 
-	ElementBase* pElemet = m_Families[a_nIndex];
-	double lfLength = pElemet->GetLength();
+	ElementBase* const pElemet = m_Families[a_nIndex];
+	const double lfLength = pElemet->GetLength();
 
 	m_Families.erase(m_Families.begin()+ a_nIndex);
-	int nSize((int)m_Elements.size());
+    int nSize((int)m_Elements.size());
+    int i, nFirstIndex= nSize-1;
 
-	for( int i(0); i < nSize; )
+	for( i=0; i < nSize; )
 	{
 
 		if( m_Elements[i] < a_nIndex )
@@ -259,11 +266,32 @@ void ElemsSeq::RemoveFamily(const int& a_nIndex)
 		}
 		else /*( m_Elements[i] == a_nIndex )*/
 		{
+            if (i < nFirstIndex) {
+                nFirstIndex = i;
+            }
 			m_Elements.erase(m_Elements.begin()+ i);
 			m_lfL -= lfLength;
 			--nSize;
 		}
 	}
+
+    m_MatrixTrans2 = (nFirstIndex > 0) ? m_MatrixesTrans[nFirstIndex - 1] : g_ctmUniqTrMatrix;
+    m_MatrixTwiss2 = (nFirstIndex > 0) ? m_MatrixesTwiss[nFirstIndex - 1] : g_ctmUniqTrMatrix;
+    m_MatrixesTrans.resize(static_cast<size_t>(nSize));
+    m_MatrixesTwiss.resize(static_cast<size_t>(nSize));
+    SMatrix* const pMatrTransPtr = const_cast<SMatrix*>(m_MatrixesTrans.data());
+    SMatrix* const pMatrTwissPtr = const_cast<SMatrix*>(m_MatrixesTwiss.data());
+
+    for (i = nFirstIndex; i < nSize; ++i) {
+        m_MatrixTrans2 = m_Families[m_Elements[i]]->GetMatrixTrans() * m_MatrixTrans2;
+        m_MatrixTwiss2 = m_Families[m_Elements[i]]->GetMatrixTwiss() * m_MatrixTwiss2;
+        pMatrTransPtr[i] = m_MatrixTrans2;
+        pMatrTwissPtr[i] = m_MatrixTwiss2;
+    }  //  for (i = nFirstIndex; i < nSize; ++i) {
+
+    if(pElemet->GetFlag(CREATED_INSIDE)) {
+        delete pElemet;
+    }
 }
 
 
@@ -295,17 +323,17 @@ void ElemsSeq::GetTwissParam(double& lfRet, const int& nWhere1, const int& which
 {
 
 	CLinear aLine;
+    const int cnElemsSize = (int)m_Elements.size();
+    if (cnElemsSize < 1) {
+        return;
+    }
 
-	int nWhere = (nWhere1 == END_OF_LATTICE) ? ((int)m_Elements.size()-1) : nWhere1;
+	const int nWhere = ((nWhere1 >= cnElemsSize) || (nWhere1<0)) ? (cnElemsSize-1) : nWhere1;
 
-	SMatrix aMatrixTrans(g_ctmUniqTrMatrix);
+	SMatrix aMatrixTrans(m_MatrixesTrans[static_cast<size_t>(nWhere)]);
+	SMatrix aMatrixTwiss(m_MatrixesTwiss[static_cast<size_t>(nWhere)]);
 	
-	for( int i(0); i < nWhere; ++i )
-	{
-		aMatrixTrans *= m_Families[m_Elements[i]]->GetMatrixTrans();
-	}
-
-	aLine.SetMatrixes( aMatrixTrans );
+	aLine.SetMatrixes( aMatrixTrans, aMatrixTwiss );
 	aLine.GetTwissParam(lfRet,END_OF_LATTICE,whichParam,aTwis0,pTwisF);
 
 }
@@ -332,49 +360,18 @@ int ElemsSeq::GetIndex(const char* cpcFamName)const
 
 void ElemsSeq::ObtainMatrixTrans()
 {
-	m_MatrixTrans = g_ctmUniqTrMatrix;
-
-	for( int i((int)m_Elements.size()-1); i >= 0; --i )
-	{
-		m_MatrixTrans *= m_Families[m_Elements[i]]->GetMatrixTrans();
-	}
 }
 
 
 
 void ElemsSeq::ObtainMatrixTwiss()
 {
-	m_MatrixTwiss = g_ctmUniqTrMatrix;
-	for( int i(0); i < m_Elements.size(); ++i )
-	{
-		m_MatrixTwiss *= m_Families[m_Elements[i]]->GetMatrixTwiss();
-	}
 }
 
 
 
 void ElemsSeq::ObtainAll()
 {
-	int i, nSizeFam((int)m_Families.size()), nSizeElms((int)m_Elements.size());
-
-	for( i = 0; i < nSizeFam; ++i )
-	{
-		m_Families[i]->ObtainAll();
-	}
-
-	//ObtainMatrixTrans();
-	//ObtainMatrixTwiss();
-
-	m_lfL = 0.;
-	m_MatrixTrans = g_ctmUniqTrMatrix;
-	m_MatrixTwiss = g_ctmUniqTrMatrix;
-
-	for( i = 0; i < nSizeElms; ++i )
-	{
-		m_lfL += m_Families[m_Elements[i]]->GetLength();
-		m_MatrixTrans *= m_Families[m_Elements[i]]->GetMatrixTrans();
-		m_MatrixTwiss *= m_Families[m_Elements[i]]->GetMatrixTwiss();
-	}
 }
 
 
@@ -532,14 +529,14 @@ void ElemsSeq::LoadFromOptimString( const char*const& a_pcBuff, int a_nRead )
 
 const SMatrix& ElemsSeq::GetMatrixTrans()const
 {
-	return m_MatrixTrans;
+	return m_MatrixTrans2;
 }
 
 
 
 const SMatrix& ElemsSeq::GetMatrixTwiss()const
 {
-	return m_MatrixTwiss;
+	return m_MatrixTwiss2;
 }
 
 

@@ -24,6 +24,12 @@ namespace DAVIT_CLASSES
 			ObtainMatrixTwiss();
 		}
 
+        inline void SetMatrixes(const SMatrix& a_TransMatr, const SMatrix& a_TwissMatr)
+        {
+            m_MatrixTrans = a_TransMatr;
+            m_MatrixTwiss = a_TwissMatr;
+        }
+
 		
 		double DfiX(
 			const double& beta0, const double& alfa0, const double& gama0 = -1. ,

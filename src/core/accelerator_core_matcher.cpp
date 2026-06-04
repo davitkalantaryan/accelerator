@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include <accelerator/matcher.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <math.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 
 namespace DAVIT_CLASSES {

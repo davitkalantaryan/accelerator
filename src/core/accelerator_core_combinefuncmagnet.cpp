@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "combinefuncmagnet.h"
+#include <accelerator/combinefuncmagnet.h>
 
 
 namespace DAVIT_CLASSES {

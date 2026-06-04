@@ -10,8 +10,10 @@
 #include <accelerator/elementbase.h>
 #include <accelerator/std/stdio.h>
 #include <accelerator/std/string.h>
+#include <cinternal/disable_compiler_warnings.h>
 #include <math.h>
-#include <malloc.h>
+#include <stdlib.h>
+#include <cinternal/undisable_compiler_warnings.h>
 
 namespace DAVIT_CLASSES {
 
@@ -131,13 +133,13 @@ void ElementBase::SetFlagStat(int a_nBit, int a_nValue, unsigned char* a_pucFlag
 }
 
 
-int ElementBase::GetFlag(int a_nBit)
+int ElementBase::GetFlag(int a_nBit) const noexcept
 {
 	return ElementBase::GetFlagStat( a_nBit, m_ucFlags2 );
 }
 
 
-int ElementBase::GetFlagStat(int a_nBit,unsigned char a_ucFlag)
+int ElementBase::GetFlagStat(int a_nBit,unsigned char a_ucFlag) noexcept
 {
 	return (a_ucFlag & (1<<a_nBit)) ? 1 : 0;
 }
